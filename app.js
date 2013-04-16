@@ -8,14 +8,15 @@ var static = require('node-static'),
 var fileServer = new static.Server('./public');
 
 var server = http.createServer(function (req, res) {
-
-	var pathname = url.parse(req.url).pathname;
-	console.log('pathname: '+pathname);
-
-	req.addListener('end', function () {
-		fileServer.serve(req, res);
-	});
-
+    fileServer.serve(req, res, function (err, res2) {
+        if (err) { // An error as occured
+            console.error("> Error serving " + req.url + " - " + err.message);
+            res.writeHead(err.status, err.headers);
+            res.end();
+        } else { // The file was served successfully
+            console.log("> " + req.url + " - " + res2.message);
+        }
+    });
 }).listen(8080, function() {
     console.log('Listening at: http://localhost:8080');
 });
@@ -49,4 +50,3 @@ io.sockets.on('connection', function(socket){
 	});
 
 });
- 
