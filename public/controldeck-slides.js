@@ -54,24 +54,26 @@ function updateGeneric(message) {
     $(document).trigger(e);
 }
 
-var iosocket = io.connect();
+if (typeof io === "object") {
+    var iosocket = io.connect();
 
-iosocket.on('connect', function () {
-    console.log('connected');
-});
+    iosocket.on('connect', function () {
+        console.log('connected');
+    });
 
-iosocket.on('message', function(message) {
-    messageHandler(message);
-});
+    iosocket.on('message', function(message) {
+        messageHandler(message);
+    });
 
-iosocket.on('key down', function(data) {
-    messageHandler("" +data.keyCode, data.shiftKey, data.altKey, data.ctrlKey, data.metaKey);
-});
+    iosocket.on('key down', function(data) {
+        messageHandler("" +data.keyCode, data.shiftKey, data.altKey, data.ctrlKey, data.metaKey);
+    });
 
-iosocket.on('key up', function(data) {
-    messageHandler("" + data.keyCode, data.shiftKey, data.altKey, data.ctrlKey, data.metaKey);
-});
+    iosocket.on('key up', function(data) {
+        messageHandler("" + data.keyCode, data.shiftKey, data.altKey, data.ctrlKey, data.metaKey);
+    });
 
-iosocket.on('disconnect', function() {
-    console.log('disconnected');
-});
+    iosocket.on('disconnect', function() {
+        console.log('disconnected');
+    });
+}
